@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Riddle with Hint</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f9f9f9; 
+        }
+        h1 { 
+            font-size: 8vw;  
+            color: #333; 
+            margin: 20px 0; 
+            word-wrap: break-word;
+        }
+        h3 { 
+            font-size: 5vw;  
+            color: #666; 
+            margin: 15px 0; 
+            word-wrap: break-word;
+        }
+        button { 
+            font-size: 5vw; 
+            padding: 15px 25px; 
+            margin-top: 25px; 
+            cursor: pointer; 
+            border-radius: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+        }
+        #timer { 
+            font-size: 5vw; 
+            margin-top: 20px; 
+            color: #ff0000; 
+        }
+        @media (min-width: 768px) {
+            h1 { font-size: 50px; }
+            h3 { font-size: 30px; }
+            button { font-size: 25px; padding: 15px 40px; }
+            #timer { font-size: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="riddle">Loading...</h1>
+    <h3 id="hint"></h3>
+    <div id="timer">01:00</div>
+    <button id="nextBtn">Next Riddle</button>
+
+    <script>
+        const riddles = [
+            { str: "I have teeth but cannot bite", hint: "Used for grooming your hair" },
+            { str: "I have keys but open no locks", hint: "Found on a piano" },
+            { str: "I am small, sharp and used to hold things together", hint: "Stationery item for papers" },
+            { str: "I have a point but I am not sharp, You use me everyday", hint: "Something you write with" },
+            { str: "I make marks but disappear when you rub me", hint: "Used for writing mistakes" },
+            { str: "I can fit in your hand and show you the world", hint: "Used for navigation and maps" },
+            { str: "I am round, shiny and used for paint", hint: "Paint tool often round and colorful" },
+            { str: "I stay in 1 place but travel all over paper", hint: "Stationery tool that leaves ink marks" },
+            { str: "I can open bottles but I am not a key", hint: "Used in kitchens to open drinks" },
+            { str: "I have a lid and hold your secrets or tiny things", hint: "A small container or jar" }
+        ];
+
+        let timerInterval;
+
+        function showRiddle() {
+            const randomIndex = Math.floor(Math.random() * riddles.length);
+            const riddle = riddles[randomIndex];
+
+            document.getElementById('riddle').innerText = riddle.str;
+            document.getElementById('hint').innerText = "Hint: " + riddle.hint;
+
+            startTimer(60);
+        }
+
+        function startTimer(seconds) {
+            clearInterval(timerInterval);
+            let remaining = seconds;
+
+            function updateTimer() {
+                let min = String(Math.floor(remaining / 60)).padStart(2, '0');
+                let sec = String(remaining % 60).padStart(2, '0');
+                document.getElementById('timer').innerText = `${min}:${sec}`;
+
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    showRiddle();
+                } else {
+                    remaining--;
+                }
+            }
+
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', showRiddle);
+
+        // Show first riddle when page loads
+        window.onload = showRiddle;
+    </script>
+</body>
+</html>
